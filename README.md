@@ -1,4 +1,4 @@
-<h2>Containerization</h2>
+<h2>A primer on containerization</h2>
 Containers are fundamentally changing the way we develop, distribute, and run software. Developers can build software locally, knowing that it will run identically regardless of host environment—be it a rack in the IT department, a user’s laptop, or a cluster in the cloud. Operations engineers can concentrate on networking, resources, and uptime and spend less time configuring environments and battling system dependencies. The use and uptake of containers is increasing at a phenomenal rate across the industry, from the smallest start ups to large-scale enterprises. Developers and operations engineers should expect to regularly use containers in some fashion within the next few years.
 
 Containers are an encapsulation of an application with its dependencies. At first glance, they appear to be just a lightweight form of virtual machines (VMs)—like a VM, a container holds an isolated instance of an operating system (OS), which we can use to run applications.
@@ -27,9 +27,9 @@ Though containers and VMs seem similar at first, there are some important differ
  
 ![Container](img/usdk_0102.png)
 
-Here, our choice for containerization is *Docker*
+Here, we chose *Docker* as our solution to containerization.
 
-<h2>Orchestration</h2>:
+<h2>Orchestration:</h2>
 organizations often have multiple such systems to run, or need to run occasional tasks such as data mining that are separate from the main system, but require significant resources or talk to the existing system.
 
 When using multiple resources, it is important to make sure they are efficiently used—not sitting idle—but can still cope with spikes in demand. Balancing cost-effectiveness against the ability to quickly scale is A difficult task that can be approached in a variety of ways.
@@ -38,8 +38,25 @@ All of this means that running a nontrivial system is full of administrative tas
 
 A solution to this problem is *Orchestration* which basically means making all the pieces work together. Starting containers on appropriate hosts and connecting them. An orchestration system may also include support for scaling, automatic failover, and node rebalancing. We decided to use *Swarm* here
 
-<h3>Swarm</h3>
+<h3>Swarm:</h3>
 Swarm is the native clustering tool for Docker. Swarm uses the standard Docker API, i.e., containers can be launched using normal docker run commands and Swarm will take care of selecting an appropriate host to run the container on. This also means that other tools that use the Docker API—such as Compose and bespoke scripts—can use Swarm without any changes and take advantage of running on a cluster rather than a single host.
+
+<h2>Scenario:</h2>
+
+![scenario](img/scenario.png)
+
+You are assigned to deploy a swarm cluster with 1 master and 3 workers
+workers must reside on an internal network , but master should be reachable from external worker and in the meantime could access the workers
+attach a volume to your worker nodes ( a shared volume for wordpress containers and a standalone volume for DB)
+requests must be load balanced through swarm
+if wordpress needed to be redeployed it shoud not reside on DB node
+write a docker compose for what just mentioned above
+
+
+
+
+
+<h2>Solution:</h2>
 
 Our first step here is to provide an internet free from all of the sanctions against us here in Iran so I chose Shecan to tackle this very issue , so you have to add your nameserver on top of the specified file `/etc/resolve.conf`
 
