@@ -168,7 +168,8 @@ gluster volume info #confirm the output by using this command
 R.mount -t glusterfs router-1:/data/brick1/gv0 /mnt/glusterfs
 ```
 
-Deploy the stack using 
+Now you need to write a docker compose file , roll up your sleeves and get the job done, and finally
+Deploy the stack using :
 
 ```
 docker stack deploy -c [yaml location] [stack name]
