@@ -1,0 +1,61 @@
+version: "3.9"
+#define services
+services:
+#defining mysql DB
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+      #providing database passwords through docker secrets to make the process more secure
+     environment:
+       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD_FILE: /run/secrets/db_password
+     secrets:
+       - db_root_password
+       - db_password
+      #only place database on nodes which have the spcified label
+     deploy: 
+       placement:
+         constraints: [node.labels.database == true]
+
+   wordpress:
+   #wordpress official image had some problems with uploading file 
+   #to be more specific the issues were in the permissions given to wp-content directory
+     image: 1234569517/wordpress:5.6
+     #expose the service through port 9000
+     ports:
+       - "9000:80"
+     #providing connection information in order to connect to DB
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+     volumes:
+       - /mnt/glusterfs:/var/www/html
+     secrets:
+       - db_password
+      #this option doesn't work on version 3 but the functionality in lower versions is to not start a service until the dependencies have been met
+     depends_on:
+       - db
+     deploy:
+       mode: replicated
+       #build 2 instances from wordpress
+       replicas: 2
+       #do not place wordpress on nodes which have the spcified label and in this process
+       #these two services won't end up on same node
+       placement:
+         constraints: [node.labels.wordpress == true]
+
+
+#providing the passwords through text files which reside in the same directory
+secrets:
+   db_password:
+     file: db_password.txt
+   db_root_password:
+     file: db_root_password.txt
+
+volumes:
+    db_data:
+
