@@ -172,8 +172,10 @@ Now you need to write a docker compose file , roll up your sleeves and get the j
 Deploy the stack using :
 
 ```
-docker stack deploy -c [yaml location] [stack name]
+docker stack deploy -c docker-compose.yml project
 ```
+
+Finally you can view 
 
 
 Tip : there is no sticky session in the provided scenario which basically means if you login to your wordpress account whenver you are redirected to the other container you will have to login again in docker swarm as an option - because swarm do the load balancing in layer 4- therefore in order to initiate sticky ones we need a reverse proxy such as nginx or traefik would do the job .
