@@ -175,7 +175,7 @@ Deploy the stack using :
 docker stack deploy -c docker-compose.yml project
 ```
 
-Finally you can view 
+Finally you can view the output by entering the ip of your swarm master node in your browser
 
 
 Tip : there is no sticky session in the provided scenario which basically means if you login to your wordpress account whenver you are redirected to the other container you will have to login again in docker swarm as an option - because swarm do the load balancing in layer 4- therefore in order to initiate sticky ones we need a reverse proxy such as nginx or traefik would do the job .
